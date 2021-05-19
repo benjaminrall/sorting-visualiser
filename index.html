@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="app/css/style.css"/>
+    <title>Sorting Visualiser</title>
+</head>
+<body>
+    <div class="bar-container" id="bar-container"></div>
+
+    <div class="center">
+        <button class="button" id="sort-button" onclick="sort()">SORT</button><br><br><br>
+        <button class="button" id="randomise-button" onclick="randomise()">RANDOMISE</button><br><br><br>
+        <label>Size:</label><br>
+        <input type="range" min="10" max="80" value="50" class="slider" id="size-slider"><br><br>
+        <label>Speed:</label><br>
+        <input type="range" min="1" max="25" value="10" class="slider" id="speed-slider">
+    </div>
+
+    <script src="app/js/script.js"></script>
+</body>
+</html>
