@@ -1,10 +1,12 @@
 let arrLen = 50;
-x = 10;
-let speed = 1 / x;
 let algorithm = -1;
 let sizeSlider = document.getElementById("size-slider");
 let speedSlider = document.getElementById("speed-slider");
 let algorithmSelect = document.getElementById("algorithm-select");
+
+x = speedSlider.value;
+let speed = 1 / x;
+
 makeBars();
 
 function makeBars(){
@@ -35,8 +37,17 @@ function setBarSorting(i){
     document.getElementById(`B${i}`).style.backgroundColor = "var(--bar-sorting)"
 }
 
-function setBarUnsorted(i){
-    document.getElementById(`B${i}`).style.backgroundColor = "var(--bar-unsorted)"
+function setBarUnsorted(i, filter = false){
+    if (!filter){
+        document.getElementById(`B${i}`).style.backgroundColor = "var(--bar-unsorted)"
+    } else if (document.getElementById(`B${i}`).style.backgroundColor !== "var(--bar-sorted)") {
+        document.getElementById(`B${i}`).style.backgroundColor = "var(--bar-unsorted)"
+    }
+    
+}
+
+function setBarPivot(i){
+    document.getElementById(`B${i}`).style.backgroundColor = "var(--bar-pivot)"
 }
 
 function resetBars(){
@@ -45,8 +56,12 @@ function resetBars(){
     }
 }
 
+function getValue(i){
+    return parseFloat(document.getElementById(`B${i}`).style.height);
+}
+
 function swapBars(i1, i2){
-    let temp = parseFloat(document.getElementById(`B${i1}`).style.height)
+    let temp = getValue(i1)
     bar1 = document.getElementById(`B${i1}`)
     bar2 = document.getElementById(`B${i2}`)
     temp = bar1.style.height
@@ -55,7 +70,7 @@ function swapBars(i1, i2){
 }
 
 function swapColours(i1, i2){
-    let temp = parseFloat(document.getElementById(`B${i1}`).style.height)
+    let temp = getValue(i1)
     bar1 = document.getElementById(`B${i1}`)
     bar2 = document.getElementById(`B${i2}`)
     temp = bar1.style.backgroundColor
@@ -81,7 +96,7 @@ async function bubbleSort(){
 
             await pause();
 
-            if (parseFloat(document.getElementById(`B${j}`).style.height) > parseFloat(document.getElementById(`B${j + 1}`).style.height)){
+            if (getValue(j) > getValue(j + 1)){
                 swapBars(j, j + 1)
                 swapped = true;
                 await pause();
@@ -109,7 +124,7 @@ async function insertionSort(){
         await pause()
 
         let j = i;
-        while (j > 0 && parseFloat(document.getElementById(`B${j}`).style.height) < parseFloat(document.getElementById(`B${j - 1}`).style.height)) {
+        while (j > 0 && getValue(j) < getValue(j - 1)) {
             swapBars(j, j - 1)
             swapColours(j, j - 1)
             j--;
@@ -131,7 +146,7 @@ async function selectionSort(){
             setBarSorting(j)
             if (j > i && j - 1 !== minimum) {setBarUnsorted(j - 1)}
 
-            if (parseFloat(document.getElementById(`B${j}`).style.height) < parseFloat(document.getElementById(`B${minimum}`).style.height)){
+            if (getValue(j) < getValue(minimum)){
                 setBarSorting(j)
                 await pause()
                 setBarUnsorted(minimum);
@@ -153,6 +168,43 @@ async function selectionSort(){
     }
 }
 
+async function quickSort(min, max){
+    if (min < max){
+        let p = await quickSortPartition(min, max);
+        await quickSort(min, p - 1);
+        await quickSort(p + 1, max);
+    }
+    if (max >= 0) {setBarSorted(max)}
+}
+
+async function quickSortPartition(min, max){
+    let pivot = getValue(max);
+    setBarPivot(max)
+    let i = min;
+    setBarSorting(i);
+    for (j = min; j < max; j++){
+        setBarSorting(j);
+
+        await pause()
+
+        if (getValue(j) < pivot){
+            
+            swapBars(i, j)
+            setBarUnsorted(i)
+            i++;
+            setBarSorting(i)
+            await pause()
+        }
+        setBarUnsorted(j)
+    }
+    swapBars(i, max);
+    await pause()
+    setBarUnsorted(max - 1)
+    setBarUnsorted(max)
+    setBarSorted(i)
+    return i
+}
+
 async function sort(){
     document.getElementById("sort-button").disabled = true;
     document.getElementById("randomise-button").disabled = true;
@@ -171,6 +223,10 @@ async function sort(){
         case "2":
             resetBars()
             await selectionSort();
+            break;
+        case "3":
+            resetBars()
+            await quickSort(0, arrLen - 1);
             break;
         default:
             alert("Please select an algorithm");
