@@ -52,10 +52,18 @@ body {
     margin: 1rem;
     position: absolute;
     top: 80%;
-    left: 50%;
-
+    left: 30%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
+  }
+
+.off-center {
+    margin: 1rem;
+    position: absolute;
+    top: 80%;
+    right: 30%;
+    -ms-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
   }
  
 .dropdown {
@@ -129,16 +137,4 @@ select:required:invalid {
     height: 1rem; /* Slider handle height */
     background: #0d53eb; /* Green background */
     cursor: pointer; /* Cursor on hover */
-  }
-
-  @media only screen and (max-width: 768px) {
-
-    .bar-container {
-        
-    }
-
-    .bar {
-        height: 8vh;
-        margin: 0.05rem;
-    }
   }
