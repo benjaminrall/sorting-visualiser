@@ -109,7 +109,6 @@ async function insertionSort(){
             j--;
             await pause()
         }
-
         setBarSorted(j)
     }
 }
