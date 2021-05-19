@@ -24,7 +24,7 @@ body {
 .bar-container {
     margin: 0;
     position: fixed;
-    top: 30%;
+    top: 35%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
@@ -49,18 +49,18 @@ body {
 }
 
 .center {
-    margin: 0;
+    margin: 1rem;
     position: absolute;
-    top: 75%;
+    top: 80%;
     left: 30%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
 
 .off-center {
-    margin: 0;
+    margin: 1rem;
     position: absolute;
-    top: 75%;
+    top: 80%;
     right: 30%;
     -ms-transform: translate(50%, -50%);
     transform: translate(50%, -50%);
