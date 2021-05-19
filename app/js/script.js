@@ -63,6 +63,12 @@ function swapColours(i1, i2){
     bar2.style.backgroundColor = temp
 }
 
+function shiftBars(start, end){
+    for (let i = end - 1; i > start; i--){
+        document.getElementById(`B${i}`).style.height = document.getElementById(`B${i - 1}`).style.height
+    }
+}
+
 async function bubbleSort(){
     let swapped = false;
     for (let i = 0; i < arrLen - 1; i++){
@@ -113,6 +119,40 @@ async function insertionSort(){
     }
 }
 
+async function selectionSort(){
+    for (let i = 0; i < arrLen; i++){
+
+        let minimum = i;
+
+        setBarSorting(minimum)
+
+        for (let j = i; j < arrLen; j++){
+
+            setBarSorting(j)
+            if (j > i && j - 1 !== minimum) {setBarUnsorted(j - 1)}
+
+            if (parseFloat(document.getElementById(`B${j}`).style.height) < parseFloat(document.getElementById(`B${minimum}`).style.height)){
+                setBarSorting(j)
+                await pause()
+                setBarUnsorted(minimum);
+                minimum = j
+            }
+
+            await pause()
+        }
+
+        let temp = document.getElementById(`B${minimum}`).style.height
+        shiftBars(i, minimum + 1)
+        document.getElementById(`B${i}`).style.height = temp;
+
+        setBarUnsorted(arrLen - 1)
+        setBarUnsorted(minimum)
+        setBarSorted(i)
+
+        await pause()
+    }
+}
+
 async function sort(){
     document.getElementById("sort-button").disabled = true;
     document.getElementById("randomise-button").disabled = true;
@@ -127,6 +167,10 @@ async function sort(){
         case "1":
             resetBars()
             await insertionSort();
+            break;
+        case "2":
+            resetBars()
+            await selectionSort();
             break;
         default:
             alert("Please select an algorithm");
