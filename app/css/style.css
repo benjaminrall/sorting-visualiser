@@ -56,15 +56,6 @@ body {
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
-
-.off-center {
-    margin: 1rem;
-    position: absolute;
-    top: 80%;
-    right: 30%;
-    -ms-transform: translate(50%, -50%);
-    transform: translate(50%, -50%);
-  }
  
 .dropdown {
     -webkit-appearance: none;  /* Override default CSS styles */
