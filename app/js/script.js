@@ -3,6 +3,7 @@ let algorithm = -1;
 let sizeSlider = document.getElementById("size-slider");
 let speedSlider = document.getElementById("speed-slider");
 let algorithmSelect = document.getElementById("algorithm-select");
+let bogoRunning = false;
 
 x = speedSlider.value;
 let speed = 1 / x;
@@ -205,7 +206,35 @@ async function quickSortPartition(min, max){
     return i
 }
 
+async function bogoSort(){
+    let sorted = false;
+    while (bogoRunning && !sorted){
+        makeBars()
+
+        sorted = true;
+        for (let i = 0; i < arrLen - 1; i++){
+            if (getValue(i) > getValue(i + 1)){
+                sorted = false;
+            }
+        }
+
+        await pause()
+    }
+    if (sorted){
+        for (let i = 0; i < arrLen; i++){
+            setBarSorted(i)
+        }
+        bogoRunning = false;
+    }
+}
+
 async function sort(){
+
+    if (bogoRunning){
+        bogoRunning = false;
+        return;
+    }
+
     document.getElementById("sort-button").disabled = true;
     document.getElementById("randomise-button").disabled = true;
     sizeSlider.disabled = true;
@@ -227,6 +256,17 @@ async function sort(){
         case "3":
             resetBars()
             await quickSort(0, arrLen - 1);
+            break;
+        case "4":
+            resetBars
+            bogoRunning = true;
+            document.getElementById("sort-button").disabled = false;
+            document.getElementById("sort-button").innerHTML = "STOP";
+            pause()
+            await bogoSort();
+            document.getElementById("sort-button").innerHTML = "SORT";
+            document.getElementById("sort-button").disabled = true;
+            document.getElementById("sort-button").disabled = false;
             break;
         default:
             alert("Please select an algorithm");
