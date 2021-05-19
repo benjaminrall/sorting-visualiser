@@ -1,8 +1,10 @@
-let arrLen = 50
-x = 10
-let speed = 1 / x
+let arrLen = 50;
+x = 10;
+let speed = 1 / x;
+let algorithm = -1;
 let sizeSlider = document.getElementById("size-slider");
 let speedSlider = document.getElementById("speed-slider");
+let algorithmSelect = document.getElementById("algorithm-select");
 makeBars();
 
 function makeBars(){
@@ -37,6 +39,12 @@ function setBarUnsorted(i){
     document.getElementById(`B${i}`).style.backgroundColor = "var(--bar-unsorted)"
 }
 
+function resetBars(){
+    for (let i = 0; i < arrLen; i++){
+        setBarUnsorted(i);
+    }
+}
+
 function swapBars(i1, i2){
     let temp = parseFloat(document.getElementById(`B${i1}`).style.height)
     bar1 = document.getElementById(`B${i1}`)
@@ -46,19 +54,32 @@ function swapBars(i1, i2){
     bar2.style.height = temp
 }
 
+function swapColours(i1, i2){
+    let temp = parseFloat(document.getElementById(`B${i1}`).style.height)
+    bar1 = document.getElementById(`B${i1}`)
+    bar2 = document.getElementById(`B${i2}`)
+    temp = bar1.style.backgroundColor
+    bar1.style.backgroundColor = bar2.style.backgroundColor
+    bar2.style.backgroundColor = temp
+}
+
 async function bubbleSort(){
     let swapped = false;
     for (let i = 0; i < arrLen - 1; i++){
         swapped = false;
         for (let j = 0; j < arrLen - i - 1; j++){
+
             if (j > 0) { setBarUnsorted(j - 1) }
             setBarSorting(j)
             setBarSorting(j + 1)
+
+            await pause();
+
             if (parseFloat(document.getElementById(`B${j}`).style.height) > parseFloat(document.getElementById(`B${j + 1}`).style.height)){
                 swapBars(j, j + 1)
                 swapped = true;
+                await pause();
             }
-            await pause();
         }
         
         if (!swapped){
@@ -74,17 +95,49 @@ async function bubbleSort(){
     setBarSorted(0)
 }
 
-async function sort(){
+async function insertionSort(){
     for (let i = 0; i < arrLen; i++){
-        setBarUnsorted(i);
+        
+        setBarSorting(i);
+
+        await pause()
+
+        let j = i;
+        while (j > 0 && parseFloat(document.getElementById(`B${j}`).style.height) < parseFloat(document.getElementById(`B${j - 1}`).style.height)) {
+            swapBars(j, j - 1)
+            swapColours(j, j - 1)
+            j--;
+            await pause()
+        }
+
+        setBarSorted(j)
     }
+}
+
+async function sort(){
     document.getElementById("sort-button").disabled = true;
     document.getElementById("randomise-button").disabled = true;
     sizeSlider.disabled = true;
-    await bubbleSort();
+    algorithmSelect.disabled = true;
+
+    switch (algorithmSelect.value) {
+        case "0":
+            resetBars()
+            await bubbleSort();
+            break;
+        case "1":
+            resetBars()
+            await insertionSort();
+            break;
+        default:
+            alert("Please select an algorithm");
+            break;
+    }
+    
     document.getElementById("sort-button").disabled = false;
     document.getElementById("randomise-button").disabled = false;
     sizeSlider.disabled = false;
+    algorithmSelect.disabled = false;
 }
 
 async function randomise(){
@@ -97,7 +150,7 @@ function pause() {
     return new Promise((resolve) => {
         setTimeout(() => {
             resolve("");
-        }, speed * 100);
+        }, speed * 200);
     });
 }
 

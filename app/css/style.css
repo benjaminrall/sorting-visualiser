@@ -49,11 +49,42 @@ body {
     margin: 0;
     position: absolute;
     top: 75%;
-    left: 50%;
+    left: 30%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
   }
+
+.off-center {
+    margin: 0;
+    position: absolute;
+    top: 75%;
+    right: 30%;
+    -ms-transform: translate(50%, -50%);
+    transform: translate(50%, -50%);
+  }
  
+.dropdown {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 10rem;
+    height: 2.5rem;
+    border-radius: 0.7rem;
+    background: #d3d3d3; /* Grey background */
+    outline: none; /* Remove outline */
+    padding:0.5rem;
+    cursor: pointer;
+}
+
+select:required:invalid {
+    color: gray;
+  }
+  option[value=""][disabled] {
+    display: none;
+  }
+  option {
+    color: black;
+  }
+
 .button {
     width: 10rem;
     height: 3rem;
@@ -99,8 +130,8 @@ body {
 }
   
   .slider::-moz-range-thumb {
-    width: 25px; /* Set a specific slider handle width */
-    height: 25px; /* Slider handle height */
-    background: #04AA6D; /* Green background */
+    width: 1rem; /* Set a specific slider handle width */
+    height: 1rem; /* Slider handle height */
+    background: #0d53eb; /* Green background */
     cursor: pointer; /* Cursor on hover */
   }
