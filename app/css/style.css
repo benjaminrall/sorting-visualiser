@@ -23,16 +23,14 @@ body {
 
 .bar-container {
     margin: 0;
-    position: fixed;
+    position: absolute;
     top: 30%;
     left: 50%;
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%);
 
-    height: 60%;
+    height: 35rem;
     padding: 1rem;
-
-    width: 80%;
 
     display: flex;
     align-items: baseline;
@@ -40,8 +38,8 @@ body {
 }
 
 .bar {
-    width: 1vw;
-    height: 10vh;
+    width: 1rem;
+    height: 10rem;
     margin: 0.1rem;
     
     background-color: var(--bar-unsorted);
