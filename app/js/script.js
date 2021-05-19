@@ -6,7 +6,7 @@ let algorithmSelect = document.getElementById("algorithm-select");
 let bogoRunning = false;
 
 x = speedSlider.value;
-let speed = 1 / x;
+let speed = 2 / x;
 
 makeBars();
 
@@ -80,9 +80,15 @@ function swapColours(i1, i2){
 }
 
 function shiftBars(start, end){
-    for (let i = end - 1; i > start; i--){
+    for (let i = end; i > start; i--){
         document.getElementById(`B${i}`).style.height = document.getElementById(`B${i - 1}`).style.height
     }
+}
+
+function moveBar(i, location){
+    let temp = document.getElementById(`B${i}`).style.height
+    shiftBars(location, i)
+    document.getElementById(`B${location}`).style.height = temp
 }
 
 async function bubbleSort(){
@@ -158,7 +164,7 @@ async function selectionSort(){
         }
 
         let temp = document.getElementById(`B${minimum}`).style.height
-        shiftBars(i, minimum + 1)
+        shiftBars(i, minimum)
         document.getElementById(`B${i}`).style.height = temp;
 
         setBarUnsorted(arrLen - 1)
@@ -199,11 +205,94 @@ async function quickSortPartition(min, max){
         setBarUnsorted(j)
     }
     swapBars(i, max);
-    await pause()
     setBarUnsorted(max - 1)
     setBarUnsorted(max)
     setBarSorted(i)
     return i
+}
+
+async function mergeSort(min, max, top = false){
+    if (min >= max){
+        setBarSorted(max);
+        return;
+    }
+
+    let mid = Math.floor((min + max) / 2)
+
+    await mergeSort(min, mid)
+    await mergeSort(mid + 1, max)
+
+    await merge(min, mid, max, top)
+
+    if (top){
+        for (let i = 0; i < arrLen; i++){
+            setBarSorted(i)
+        }
+    }
+}
+
+async function merge(min, mid, max, top){
+    let i = min
+    let j = mid + 1
+    let k = 0
+    let old_k = 0
+    let p = 0
+
+    setBarSorting(i)
+    setBarSorting(j)
+
+    while (i <= mid && j <= max){
+        setBarSorting(i + old_k)
+        setBarSorting(j)
+        await pause()
+        if (getValue(i + k) < getValue(j)){
+            moveBar(i + k, min + p)
+            if (i + k !== min + p){
+                k++;
+            }
+            setBarUnsorted(i + old_k, true)
+            if (top) {setBarSorted(i + old_k)}
+            i++;
+            old_k = k
+            setBarSorting(i + old_k)
+        } else {
+            moveBar(j, min + p)
+            if (j !== min + p){
+                setBarUnsorted(i + old_k, true)
+                if (top) {setBarSorted(min + p + 1)}
+                k++;
+            }
+            setBarUnsorted(j, true)
+            j++;
+        }
+        p++;
+    }
+    
+    while (i <= mid){
+        setBarSorting(i + k)
+        await pause()
+        moveBar(i + k, min + p)
+        setBarUnsorted(i + k, true)
+        if (top) {setBarSorted(i + k)}
+        i++;
+        p++;
+    }
+
+    while (j <= max){
+        setBarSorting(j)
+        await pause()
+        moveBar(j, min + p)
+        setBarUnsorted(j, true)
+        if (top) {setBarSorted(j)}
+        j++;
+        p++;
+    }
+
+    if (!top){
+        setBarUnsorted(i + old_k)
+        setBarUnsorted(Math.min(j, arrLen - 1))
+    }
+    
 }
 
 async function bogoSort(){
@@ -258,6 +347,10 @@ async function sort(){
             await quickSort(0, arrLen - 1);
             break;
         case "4":
+            resetBars()
+            await mergeSort(0, arrLen - 1, true);
+            break;
+        case "5":
             resetBars
             bogoRunning = true;
             document.getElementById("sort-button").disabled = false;
@@ -299,5 +392,5 @@ sizeSlider.oninput = function() {
 }
 
 speedSlider.oninput = function() {
-    speed = 1 / parseInt(this.value);
+    speed = 2 / parseInt(this.value);
 }
