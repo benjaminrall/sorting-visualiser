@@ -120,9 +120,9 @@ select:required:invalid {
     -webkit-transition: .2s; /* 0.2 seconds transition on hover */
     transition: opacity .2s;
     border-radius: 1rem;
-}
+  }
 
-.slider::-webkit-slider-thumb {
+  .slider::-webkit-slider-thumb {
     -webkit-appearance: none; /* Override default look */
     appearance: none;
     width: 1rem; /* Set a specific slider handle width */
@@ -132,13 +132,9 @@ select:required:invalid {
     border-radius: 1rem;
 }
   
-.slider::-moz-range-thumb {
+  .slider::-moz-range-thumb {
     width: 1rem; /* Set a specific slider handle width */
     height: 1rem; /* Slider handle height */
     background: #0d53eb; /* Green background */
     cursor: pointer; /* Cursor on hover */
-}
-
-@media only screen and (max-width: 768px) {
-
-}
+  }
