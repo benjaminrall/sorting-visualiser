@@ -21,6 +21,34 @@ body {
     padding: 0;
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover {
+    background-color: #111;
+  }
+
+  .active {
+    background-color: #004500;
+  }
+
 .bar-container {
     margin: 0;
     position: fixed;
@@ -142,7 +170,7 @@ select:required:invalid {
 
   @media only screen and (max-width: 1024px) {
     .bar-container {
-        top:30%;
+        
         height: 60%;
     }
 
@@ -161,8 +189,8 @@ select:required:invalid {
 
 @media only screen and (max-width: 768px) {
     .bar-container {
-        top:22%;
-        height: 40%;
+        top:26%;
+        height: 38%;
     }
 
     .bar {
@@ -172,7 +200,7 @@ select:required:invalid {
 
     .center {
         left: 50%;
-        top: 54%;
+        top: 56%;
         text-align: center;
         margin: auto;
     }
